@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="Interactive Claude-guided installation guide for n8n MCP Server. Get personalized, real-time assistance setting up n8n with Claude Desktop.">
+    <meta name="keywords" content="n8n, MCP, Claude, automation, workflow, installation guide">
+    <meta property="og:title" content="Interactive n8n MCP Installation Guide">
+    <meta property="og:description" content="Get personalized, step-by-step guidance from Claude to install n8n MCP Server">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Interactive n8n MCP Installation Guide - Claude-Powered Setup</title>
+    
+    <style>
+        :root {
+            --navy: #0F172A;
+            --navy-light: #1E293B;
+            --orange: #FF6B35;
+            --orange-hover: #FF8255;
+            --bg-light: #FAFAFA;
+            --bg-white: #FFFFFF;
+            --text-dark: #374151;
+            --text-light: #6B7280;
+            --border-light: #E5E7EB;
+            --code-bg: #F3F4F6;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-brand:hover {
+            transform: translateY(-2px);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 2px solid transparent;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .github-btn {
+            background: transparent;
+            border: 2px solid var(--orange);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .github-btn:hover {
+            background: var(--orange);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%);
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 60%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, transparent 70%);
+            transform: rotate(15deg);
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+        
+        .hero-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--orange);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-desc {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        /* Credit Section */
+        .credit-section {
+            background: white;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .credit-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            text-align: center;
+        }
+        
+        .credit-text {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+        }
+        
+        .credit-link {
+            color: var(--orange);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .credit-link:hover {
+            color: var(--orange-hover);
+            transform: translateY(-2px);
+        }
+        
+        /* Content Section */
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+        
+        .content h1 {
+            font-size: 2.5rem;
+            color: var(--navy);
+            margin: 3rem 0 1.5rem;
+            font-weight: 700;
+            position: relative;
+            padding-left: 0.5rem;
+        }
+        
+        .content h1::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--orange);
+            border-radius: 2px;
+        }
+        
+        .content h2 {
+            font-size: 2rem;
+            color: var(--navy);
+            margin: 2.5rem 0 1.25rem;
+            font-weight: 600;
+        }
+        
+        .content h3 {
+            font-size: 1.5rem;
+            color: var(--navy-light);
+            margin: 2rem 0 1rem;
+            font-weight: 600;
+        }
+        
+        .content p {
+            margin-bottom: 1.25rem;
+            line-height: 1.8;
+        }
+        
+        .content ul, .content ol {
+            margin: 1.25rem 0;
+            padding-left: 2rem;
+        }
+        
+        .content li {
+            margin-bottom: 0.75rem;
+            line-height: 1.8;
+        }
+        
+        .content strong {
+            color: var(--navy);
+            font-weight: 600;
+        }
+        
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            position: relative;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        code {
+            font-family: 'Fira Code', 'JetBrains Mono', 'SF Mono', Consolas, 'Liberation Mono', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            color: var(--navy);
+        }
+        
+        pre code {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: inherit;
+        }
+        
+        .code-block-wrapper {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .copy-btn:hover {
+            background: var(--orange);
+            transform: translateY(-2px);
+        }
+        
+        .copy-btn.copied {
+            background: #10B981;
+        }
+        
+        /* Platform Sections */
+        .platform-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+        
+        .platform-section:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        .platform-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-light);
+        }
+        
+        .platform-icon {
+            font-size: 2rem;
+        }
+        
+        .platform-title {
+            font-size: 1.75rem;
+            color: var(--navy);
+            font-weight: 600;
+        }
+        
+        /* Prompt Cards */
+        .prompt-card {
+            background: linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%);
+            border: 2px solid var(--border-light);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .prompt-card:hover {
+            border-color: var(--orange);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .prompt-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .prompt-badge {
+            background: var(--orange);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        /* TOC */
+        .toc {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
+        
+        .toc-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .toc-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .toc-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            display: block;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .toc-link:hover {
+            background: var(--bg-light);
+            color: var(--orange);
+            padding-left: 1.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--navy);
+            color: white;
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            opacity: 1;
+            color: var(--orange);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .content {
+                padding: 2rem 1rem;
+            }
+            
+            .platform-section {
+                padding: 1.5rem 1rem;
+            }
+            
+            pre {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .copy-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            nav, footer, .copy-btn {
+                display: none;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .content {
+                max-width: 100%;
+            }
+        }
+        
+        /* Smooth Scrolling for Safari */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                -webkit-text-size-adjust: 100%;
+            }
+        }
+        
+        /* High Contrast Mode Support */
+        @media (prefers-contrast: high) {
+            :root {
+                --navy: #000000;
+                --orange: #FF4500;
+                --bg-light: #FFFFFF;
+                --text-dark: #000000;
+            }
+        }
+        
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+            
+            html {
+                scroll-behavior: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="nav-brand">
+                <span>🚀</span> n8n MCP Guide
+            </a>
+            <div class="nav-links">
+                <a href="#windows" class="nav-link">Windows</a>
+                <a href="#mac" class="nav-link">Mac</a>
+                <a href="#universal" class="nav-link">Universal</a>
+                <a href="https://github.com/leonardsellem/n8n-mcp-server" target="_blank" rel="noopener noreferrer" class="github-btn">
+                    <span>⭐</span> GitHub Repository
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Interactive Claude-Guided Installation:<br>n8n MCP Server</h1>
+            <p class="hero-subtitle">Get personalized, real-time assistance from Claude to set up n8n with Claude Desktop</p>
+            
+            <div class="hero-features">
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <div class="feature-title">Step-by-Step Guidance</div>
+                    <div class="feature-desc">Claude guides you through your specific OS setup</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <div class="feature-title">Real-Time Troubleshooting</div>
+                    <div class="feature-desc">Get instant help for any issues that arise</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">Adaptive Instructions</div>
+                    <div class="feature-desc">Tailored to your technical level and setup</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Credit Section -->
+    <div class="credit-section">
+        <div class="credit-container">
+            <p class="credit-text">
+                Interactive guide created by 
+                <a href="https://instagram.com/alexbitar" target="_blank" rel="noopener noreferrer" class="credit-link">
+                    @alexbitar <span>↗</span>
+                </a>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Introduction -->
+        <section>
+            <h1>🎯 What This Guide Does</h1>
+            <p>Instead of following static instructions, this guide provides <strong>copy-paste prompts</strong> that you can send to Claude (in any Claude interface - web, desktop, mobile) to get <strong>live, interactive guidance</strong> through the entire n8n MCP server installation process.</p>
+            
+            <p>Claude will:</p>
+            <ul>
+                <li>✅ Guide you step-by-step through your specific operating system</li>
+                <li>✅ Help troubleshoot issues in real-time</li>
+                <li>✅ Adapt to your specific setup and problems</li>
+                <li>✅ Answer questions as they come up</li>
+                <li>✅ Verify each step worked before moving to the next</li>
+            </ul>
+        </section>
+        
+        <!-- Table of Contents -->
+        <div class="toc">
+            <div class="toc-title">📚 Quick Navigation</div>
+            <ul class="toc-list">
+                <li class="toc-item"><a href="#prerequisites" class="toc-link">📋 Before You Start</a></li>
+                <li class="toc-item"><a href="#windows" class="toc-link">🖥️ Windows Installation</a></li>
+                <li class="toc-item"><a href="#mac" class="toc-link">🍎 Mac Installation</a></li>
+                <li class="toc-item"><a href="#universal" class="toc-link">🔧 Universal Prompts</a></li>
+                <li class="toc-item"><a href="#why-works" class="toc-link">🎓 Why This Works Better</a></li>
+            </ul>
+        </div>
+        
+        <!-- Prerequisites -->
+        <section id="prerequisites">
+            <h2>📋 Before You Start</h2>
+            <p>Make sure you have:</p>
+            <ul>
+                <li>Claude Desktop app installed (or access to Claude via web/mobile)</li>
+                <li>About 30-45 minutes</li>
+                <li>Administrator access to your computer</li>
+            </ul>
+        </section>
+        
+        <!-- Windows Section -->
+        <section id="windows" class="platform-section">
+            <div class="platform-header">
+                <span class="platform-icon">🖥️</span>
+                <h1 class="platform-title">WINDOWS USERS: Copy-Paste Prompts</h1>
+            </div>
+            
+            <!-- Windows Prompt 1 -->
+            <div class="prompt-card">
+                <div class="prompt-title">
+                    <span class="prompt-badge">Prompt 1</span>
+                    Initial Setup and Assessment
+                </div>
+                <p><strong>Copy this entire prompt and paste it to Claude:</strong></p>
+                <div class="code-block-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>&lt;task&gt;
+I need to install the n8n MCP (Model Context Protocol) server to work with Claude Desktop on Windows. I want you to be my personal technical guide through this entire process.
+
+Please start by reading the latest installation information from this GitHub repository: https://github.com/leonardsellem/n8n-mcp-server
+
+&lt;requirements&gt;
+- Guide me step-by-step for Windows
+- Check if each step worked before moving to the next
+- Help me troubleshoot any issues
+- Explain what each step does in plain English
+- Ask me to confirm each step before proceeding
+&lt;/requirements&gt;
+
+&lt;my_system&gt;
+Operating System: Windows
+Technical Level: [Tell me: Are you comfortable with command line? Scale 1-10]
+Current n8n setup: [Tell me: Do you have n8n running? If yes, where? (localhost:5678, cloud, etc.)]
+&lt;/my_system&gt;
+&lt;/task&gt;
+
+First, please:
+1. Fetch the latest info from the GitHub repository
+2. Tell me what we're going to install and why
+3. Check what I need to have ready
+4. Start with step 1: Node.js installation
+
+Guide me through each step one at a time, and ask me to tell you the result before moving forward.</code></pre>
+                </div>
+            </div>
+            
+            <!-- Windows Prompt 2 -->
+            <div class="prompt-card">
+                <div class="prompt-title">
+                    <span class="prompt-badge">Prompt 2</span>
+                    If You Run Into Issues
+                </div>
+                <p><strong>Use this prompt if something goes wrong:</strong></p>
+                <div class="code-block-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>&lt;troubleshooting&gt;
+I'm having an issue during the n8n MCP server installation on Windows.
+
+&lt;current_situation&gt;
+[Describe exactly what happened - what command you ran, what error you got, etc.]
+&lt;/current_situation&gt;
+
+&lt;system_info&gt;
+Windows Version: [Check: Windows 10, 11, etc.]
+What I was trying to do: [Describe the specific step]
+Error message: [Copy the exact error message if any]
+&lt;/system_info&gt;
+
+Please help me:
+1. Diagnose what went wrong
+2. Provide the specific solution for my situation  
+3. Give me the exact commands to run
+4. Verify the fix worked before continuing
+5. Continue with the installation from where we left off
+
+Be very specific with Windows commands and file paths.
+&lt;/troubleshooting&gt;</code></pre>
+                </div>
+            </div>
+            
+            <!-- Windows Prompt 3 -->
+            <div class="prompt-card">
+                <div class="prompt-title">
+                    <span class="prompt-badge">Prompt 3</span>
+                    Configuration and Testing
+                </div>
+                <p><strong>Use this after installation to configure Claude Desktop:</strong></p>
+                <div class="code-block-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>&lt;configuration&gt;
+I've successfully installed the n8n MCP server on Windows and now need to configure Claude Desktop to use it.
+
+&lt;current_status&gt;
+✅ Node.js installed: [Confirm version]
+✅ n8n MCP server installed: [Confirm it responded to --help]  
+✅ n8n API key obtained: [Confirm you have your API key]
+
+My n8n details:
+- n8n URL: [Example: http://localhost:5678 or https://your-n8n.com]
+- API key: [I have this ready]
+&lt;/current_status&gt;
+
+Please guide me through:
+1. Finding the Claude Desktop config file on Windows
+2. Creating or editing the claude_desktop_config.json file
+3. Adding the exact configuration with my specific details
+4. Testing that everything works together
+5. Troubleshooting if the connection fails
+
+Give me exact file paths, exact JSON configuration, and exact commands for Windows.
+&lt;/configuration&gt;</code></pre>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Mac Section -->
+        <section id="mac" class="platform-section">
+            <div class="platform-header">
+                <span class="platform-icon">🍎</span>
+                <h1 class="platform-title">MAC USERS: Copy-Paste Prompts</h1>
+            </div>
+            
+            <!-- Mac Prompt 1 -->
+            <div class="prompt-card">
+                <div class="prompt-title">
+                    <span class="prompt-badge">Prompt 1</span>
+                    Initial Setup and Assessment
+                </div>
+                <p><strong>Copy this entire prompt and paste it to Claude:</strong></p>
+                <div class="code-block-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>&lt;task&gt;
+I need to install the n8n MCP (Model Context Protocol) server to work with Claude Desktop on Mac. I want you to be my personal technical guide through this entire process.
+
+Please start by reading the latest installation information from this GitHub repository: https://github.com/leonardsellem/n8n-mcp-server
+
+&lt;requirements&gt;
+- Guide me step-by-step for macOS
+- Check if each step worked before moving to the next
+- Help me troubleshoot any issues
+- Explain what each step does in plain English
+- Ask me to confirm each step before proceeding
+&lt;/requirements&gt;
+
+&lt;my_system&gt;
+Operating System: macOS [Tell me: What version? Check Apple Menu > About This Mac]
+Technical Level: [Tell me: Are you comfortable with Terminal? Scale 1-10]
+Current n8n setup: [Tell me: Do you have n8n running? If yes, where? (localhost:5678, cloud, etc.)]
+&lt;/my_system&gt;
+&lt;/task&gt;
+
+First, please:
+1. Fetch the latest info from the GitHub repository
+2. Tell me what we're going to install and why
+3. Check what I need to have ready
+4. Start with step 1: Node.js installation
+
+Guide me through each step one at a time, and ask me to tell you the result before moving forward.</code></pre>
+                </div>
+            </div>
+            
+            <!-- Mac Prompt 2 -->
+            <div class="prompt-card">
+                <div class="prompt-title">
+                    <span class="prompt-badge">Prompt 2</span>
+                    If You Run Into Issues
+                </div>
+                <p><strong>Use this prompt if something goes wrong:</strong></p>
+                <div class="code-block-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>&lt;troubleshooting&gt;
+I'm having an issue during the n8n MCP server installation on Mac.
+
+&lt;current_situation&gt;
+[Describe exactly what happened - what command you ran, what error you got, etc.]
+&lt;/current_situation&gt;
+
+&lt;system_info&gt;
+macOS Version: [Check: Monterey, Ventura, Sonoma, etc.]
+What I was trying to do: [Describe the specific step]
+Error message: [Copy the exact error message if any]
+Terminal output: [Copy any relevant terminal output]
+&lt;/system_info&gt;
+
+Please help me:
+1. Diagnose what went wrong
+2. Provide the specific solution for my situation  
+3. Give me the exact commands to run (including sudo if needed)
+4. Verify the fix worked before continuing
+5. Continue with the installation from where we left off
+
+Be very specific with macOS commands, file paths, and permission handling.
+&lt;/troubleshooting&gt;</code></pre>
+                </div>
+            </div>
+            
+            <!-- Mac Prompt 3 -->
+            <div class="prompt-card">
+                <div class="prompt-title">
+                    <span class="prompt-badge">Prompt 3</span>
+                    Configuration and Testing
+                </div>
+                <p><strong>Use this after installation to configure Claude Desktop:</strong></p>
+                <div class="code-block-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>&lt;configuration&gt;
+I've successfully installed the n8n MCP server on Mac and now need to configure Claude Desktop to use it.
+
+&lt;current_status&gt;
+✅ Node.js installed: [Confirm version]
+✅ n8n MCP server installed: [Confirm it responded to --help]  
+✅ n8n API key obtained: [Confirm you have your API key]
+
+My n8n details:
+- n8n URL: [Example: http://localhost:5678 or https://your-n8n.com]
+- API key: [I have this ready]
+&lt;/current_status&gt;
+
+Please guide me through:
+1. Finding the Claude Desktop config file on Mac
+2. Creating or editing the claude_desktop_config.json file  
+3. Adding the exact configuration with my specific details
+4. Testing that everything works together
+5. Troubleshooting if the connection fails
+
+Give me exact file paths, exact JSON configuration, and exact Terminal commands for macOS.
+&lt;/configuration&gt;</code></pre>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Universal Section -->
+        <section id="universal" class="platform-section">
+            <div class="platform-header">
+                <span class="platform-icon">🔧</span>
+                <h1 class="platform-title">UNIVERSAL PROMPTS (Both Windows & Mac)</h1>
+            </div>
+            
+            <!-- Advanced Troubleshooting -->
+            <div class="prompt-card">
+                <div class="prompt-title">
+                    Advanced Troubleshooting Prompt
+                </div>
+                <p><strong>Use this for complex issues or if multiple things are broken:</strong></p>
+                <div class="code-block-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>&lt;advanced_help&gt;
+I need comprehensive help with my n8n MCP server setup. Multiple things might be wrong.
+
+&lt;full_situation&gt;
+Operating System: [Windows/Mac + version]
+Installation method used: [npm global install / from source / other]
+Current issue: [Describe the main problem]
+
+What's working:
+- [List anything that IS working]
+
+What's not working:  
+- [List everything that's broken or not responding]
+
+Error messages:
+- [Include ALL error messages you're seeing]
+
+What I've tried:
+- [List any troubleshooting steps you've already attempted]
+&lt;/full_situation&gt;
+
+I need you to:
+1. Read the latest GitHub repository info to get current best practices
+2. Diagnose ALL the issues systematically  
+3. Give me a complete recovery plan
+4. Walk through each fix step-by-step
+5. Test each component individually
+6. Get everything working together
+
+Please be thorough and methodical - I want to understand what went wrong and how to prevent it in the future.
+&lt;/advanced_help&gt;</code></pre>
+                </div>
+            </div>
+            
+            <!-- Testing and Verification -->
+            <div class="prompt-card">
+                <div class="prompt-title">
+                    Testing and Verification Prompt
+                </div>
+                <p><strong>Use this to verify everything is working correctly:</strong></p>
+                <div class="code-block-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>&lt;verification&gt;
+I want to thoroughly test my n8n MCP server installation with Claude Desktop to make sure everything is working properly.
+
+&lt;setup_details&gt;
+Operating System: [Your OS]
+Installation complete: [Yes/No/Partially]
+Configuration file: [Created and saved]
+Claude Desktop: [Restarted after config changes]
+&lt;/setup_details&gt;
+
+Please help me:
+1. Test the basic connection between Claude and n8n
+2. Verify I can list my n8n workflows  
+3. Test creating a simple workflow through Claude
+4. Check that API permissions are working correctly
+5. Verify webhook functionality (if I want to use it)
+6. Give me a list of example commands I can try
+7. Show me what successful responses should look like
+
+Walk me through comprehensive testing so I know everything is working properly.
+&lt;/verification&gt;</code></pre>
+                </div>
+            </div>
+            
+            <!-- Learning and Exploration -->
+            <div class="prompt-card">
+                <div class="prompt-title">
+                    Learning and Exploration Prompt
+                </div>
+                <p><strong>Use this after everything is working to learn what you can do:</strong></p>
+                <div class="code-block-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>&lt;exploration&gt;
+My n8n MCP server is now working with Claude Desktop! I want to learn what I can do with this powerful combination.
+
+&lt;my_interests&gt;
+I'm particularly interested in: [Tell Claude what you want to automate - email, data processing, notifications, etc.]
+My technical level: [Beginner/Intermediate/Advanced]
+My n8n experience: [New to n8n / Some experience / Advanced user]
+&lt;/my_interests&gt;
+
+Please help me:
+1. Understand the key capabilities of this integration
+2. Show me practical examples I can try right now
+3. Teach me the most useful commands for managing workflows
+4. Give me ideas for automation projects I could build
+5. Explain best practices for using Claude with n8n
+6. Provide some starter workflow examples I could create
+
+Make this educational and hands-on - I want to really understand the power of what I just set up!
+&lt;/exploration&gt;</code></pre>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Why This Works Better -->
+        <section id="why-works">
+            <h1>🎓 Why This Approach Works Better</h1>
+            
+            <h2>✅ Advantages of Claude-Guided Installation</h2>
+            <p><strong>Compared to static documentation:</strong></p>
+            <ol>
+                <li><strong>Real-time adaptation</strong>: Claude reads the latest GitHub info and adapts to your specific situation</li>
+                <li><strong>Interactive troubleshooting</strong>: Get help for your exact error messages and system configuration</li>
+                <li><strong>Step-by-step verification</strong>: Claude checks each step worked before proceeding</li>
+                <li><strong>Personalized guidance</strong>: Adjusts explanations to your technical level</li>
+                <li><strong>Current information</strong>: Always uses the latest installation methods and best practices</li>
+            </ol>
+            
+            <h2>📚 Built on Prompt Engineering Best Practices</h2>
+            <p>These prompts use proven techniques:</p>
+            <ul>
+                <li><strong>Clear role definition</strong>: Claude becomes your technical guide</li>
+                <li><strong>Structured input</strong>: XML tags organize information clearly</li>
+                <li><strong>Chain of thought</strong>: Claude thinks through problems step-by-step</li>
+                <li><strong>Context preservation</strong>: Each prompt builds on previous interactions</li>
+                <li><strong>Specific instructions</strong>: Clear, actionable guidance</li>
+                <li><strong>Error handling</strong>: Built-in troubleshooting workflows</li>
+            </ul>
+            
+            <h2>🔄 How to Use These Prompts</h2>
+            <ol>
+                <li><strong>Start fresh</strong>: Use Prompt 1 for your OS to begin</li>
+                <li><strong>One conversation</strong>: Keep everything in the same Claude conversation for context</li>
+                <li><strong>Follow Claude's lead</strong>: Let Claude guide the pace and check each step</li>
+                <li><strong>Be specific</strong>: When Claude asks for information, be detailed and accurate</li>
+                <li><strong>Copy exact commands</strong>: Use exactly what Claude provides</li>
+                <li><strong>Test thoroughly</strong>: Use the verification prompt when done</li>
+            </ol>
+            
+            <h2>🆘 If You Get Stuck</h2>
+            <ul>
+                <li>Use the troubleshooting prompts with exact error messages</li>
+                <li>Stay in the same conversation with Claude for context</li>
+                <li>Be patient - Claude can solve complex technical issues step-by-step</li>
+                <li>Don't skip Claude's verification steps</li>
+            </ul>
+            
+            <h2>🚀 Ready to Start?</h2>
+            <p>Pick your operating system above and copy-paste <strong>Prompt 1</strong> to get started. Claude will take care of the rest, guiding you through a successful installation with personalized support every step of the way!</p>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>Interactive n8n MCP Installation Guide</p>
+            <div class="footer-links">
+                <a href="https://github.com/leonardsellem/n8n-mcp-server" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repository</a>
+                <a href="https://n8n.io" target="_blank" rel="noopener noreferrer" class="footer-link">n8n Documentation</a>
+                <a href="https://www.anthropic.com" target="_blank" rel="noopener noreferrer" class="footer-link">Anthropic</a>
+                <a href="https://instagram.com/alexbitar" target="_blank" rel="noopener noreferrer" class="footer-link">@alexbitar</a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // Copy code functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement.querySelector('pre code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    button.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                    button.textContent = 'Failed';
+                    setTimeout(() => {
+                        button.textContent = 'Copy';
+                    }, 2000);
+                }
+                
+                document.body.removeChild(textArea);
+            });
+        }
+        
+        // Smooth scroll behavior for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Add active state to navigation based on scroll position
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        function updateActiveNav() {
+            const scrollY = window.pageYOffset;
+            
+            sections.forEach(section => {
+                const sectionHeight = section.offsetHeight;
+                const sectionTop = section.offsetTop - 100;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', updateActiveNav);
+        
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
+        });
+        
+        // Mobile menu toggle (if needed)
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+        
+        // Print-friendly version
+        window.addEventListener('beforeprint', () => {
+            document.querySelectorAll('pre').forEach(pre => {
+                pre.style.whiteSpace = 'pre-wrap';
+                pre.style.wordWrap = 'break-word';
+            });
+        });
+        
+        window.addEventListener('afterprint', () => {
+            document.querySelectorAll('pre').forEach(pre => {
+                pre.style.whiteSpace = '';
+                pre.style.wordWrap = '';
+            });
+        });
+        
+        // Performance optimization: lazy load images if any are added
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('img.lazy').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+        
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + K to focus search (if implemented)
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                // Add search focus logic here
+            }
+            
+            // Escape to close modals (if implemented)
+            if (e.key === 'Escape') {
+                // Add modal close logic here
+            }
+        });
+        
+        // Track copy events for analytics (if needed)
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Analytics tracking code here
+                console.log('Code copied:', btn.parentElement.parentElement.querySelector('.prompt-title')?.textContent || 'Unknown');
+            });
+        });
+    </script>
+</body>
+</html>
