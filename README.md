@@ -47,7 +47,7 @@ Before starting, ensure you have:
 
 ### Option 1: Use the Web Guide
 Visit our interactive web guide for the best experience:
-> 🌐 **[Interactive Installation Guide](https://your-vercel-deployment.vercel.app)**
+> 🌐 **[Interactive Installation Guide](https://interactive-claude-guided-installat.vercel.app/)**
 
 ### Option 2: Direct Prompts
 
@@ -306,11 +306,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-
-**If this helped you, please ⭐ star the repository!**
-
-Made with ❤️ by the community
-
-[Report Bug](https://github.com/yourusername/repo/issues) · [Request Feature](https://github.com/yourusername/repo/issues) · [Join Discussion](https://github.com/yourusername/repo/discussions)
 
 </div>
